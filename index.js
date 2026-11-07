@@ -1,22 +1,11 @@
 const mc = require("minecraft-protocol");
 
-if (process.argv.length < 3) {
-  console.log("Используйте: node index.js <IP сервера>");
-  process.exit(1);
-}
-
-const fullAddress = process.argv[2];
-// Правильно разделяем IP и порт (например lollyeyes.aternos.me:49780)
-const addressParts = fullAddress.split(':');
-const serverHost = addressParts[0];
-const serverPort = addressParts[1] ? parseInt(addressParts[1]) : 25565;
-
 function startBot() {
-  console.log(`[Бот] Подключаюсь к ${serverHost}:${serverPort}...`);
+  console.log("[Бот] Подключаюсь к lollyeyes.aternos.me:49780...");
   
   const client = mc.createClient({
-    host: serverHost,
-    port: serverPort,
+    host: "lollyeyes.aternos.me",
+    port: 49780,
     username: "AternosBot"
   });
 
