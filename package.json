@@ -1,0 +1,15 @@
+{
+  "name": "aternosbot",
+  "version": "2.0.0",
+  "description": "Бот, который прогружает сервер на Aternos'e",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rqbik",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "minecraft-protocol": "^1.9.4"
+  }
+}
