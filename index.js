@@ -1,4 +1,16 @@
 const mc = require("minecraft-protocol");
+const http = require("http");
+
+// Создаем мини-сайт для хостинга Render, чтобы убрать ошибку Deploy failed
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Bot is running!\n");
+});
+
+const PORT = process.env.PORT || 10000;
+server.listen(PORT, () => {
+  console.log(`[Сайт] Веб-сервер запущен на порту ${PORT}`);
+});
 
 function startBot() {
   console.log("[Бот] Пробую зайти на lollyeyes.aternos.me:49780...");
@@ -38,7 +50,7 @@ function startBot() {
   });
 
   client.on("error", (err) => {
-    console.log("[Бот] Ошибка связи. Ждем 30 секунд...");
+    console.log("[Бот] Ошибка связи. Ждем 30 секунд... ");
     clearInterval(moveInterval);
     moveInterval = null;
     setTimeout(startBot, 30000);
