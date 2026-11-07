@@ -11,8 +11,8 @@ function startBot() {
   console.log(`[Бот] Подключаюсь к ${serverIp}...`);
   
   const client = mc.createClient({
-    host: serverIp,
-    port: 25565, // Скрипт сам найдет порт Атерноса по IP
+    host: serverIp.split(':')[0],
+    port: serverIp.split(':')[1] ? parseInt(serverIp.split(':')[1]) : 25565,
     username: "AternosBot"
   });
 
@@ -22,12 +22,10 @@ function startBot() {
     console.log("[Бот] Успешно зашел на сервер и держит онлайн!");
   });
 
-  // Этот блок заставляет бота постоянно шевелиться каждые 4 секунды
   client.on("position", () => {
     if (!moveInterval) {
       moveInterval = setInterval(() => {
         if (client.position) {
-          // Бот немного меняет свои координаты и прыгает, чтобы Атернос его не кикал
           client.write("position", {
             x: client.position.x + (Math.random() - 0.5) * 0.1,
             y: client.position.y,
@@ -39,19 +37,18 @@ function startBot() {
     }
   });
 
-  // Если сервер выключился или бота кикнуло — он сам перезайдет через 15 секунд
   client.on("end", (reason) => {
-    console.log(`[Бот] Отключился (${reason}). Перезапуск через 15 секунд...`);
+    console.log(`[Бот] Отключился (${reason}). Ждем 60 секунд перед перезаходом...`);
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 15000);
+    setTimeout(startBot, 60000); // Ждем минуту
   });
 
   client.on("error", (err) => {
-    console.log("[Бот] Ошибка подключения. Попытка перезахода...");
+    console.log("[Бот] Ошибка подключения. Ждем 60 секунд перед перезаходом...");
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 15000);
+    setTimeout(startBot, 60000); // Ждем минуту
   });
 }
 
