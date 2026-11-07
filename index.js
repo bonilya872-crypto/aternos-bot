@@ -5,14 +5,18 @@ if (process.argv.length < 3) {
   process.exit(1);
 }
 
-const serverIp = process.argv[2];
+const fullAddress = process.argv[2];
+// Правильно разделяем IP и порт (например lollyeyes.aternos.me:49780)
+const addressParts = fullAddress.split(':');
+const serverHost = addressParts[0];
+const serverPort = addressParts[1] ? parseInt(addressParts[1]) : 25565;
 
 function startBot() {
-  console.log(`[Бот] Подключаюсь к ${serverIp}...`);
+  console.log(`[Бот] Подключаюсь к ${serverHost}:${serverPort}...`);
   
   const client = mc.createClient({
-    host: serverIp.split(':')[0],
-    port: serverIp.split(':')[1] ? parseInt(serverIp.split(':')[1]) : 25565,
+    host: serverHost,
+    port: serverPort,
     username: "AternosBot"
   });
 
@@ -41,14 +45,14 @@ function startBot() {
     console.log(`[Бот] Отключился (${reason}). Ждем 60 секунд перед перезаходом...`);
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 60000); // Ждем минуту
+    setTimeout(startBot, 60000);
   });
 
   client.on("error", (err) => {
     console.log("[Бот] Ошибка подключения. Ждем 60 секунд перед перезаходом...");
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 60000); // Ждем минуту
+    setTimeout(startBot, 60000);
   });
 }
 
