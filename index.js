@@ -1,7 +1,7 @@
 const mc = require("minecraft-protocol");
 
 function startBot() {
-  console.log("[Бот] Подключаюсь к lollyeyes.aternos.me:49780...");
+  console.log("[Бот] Пробую зайти на lollyeyes.aternos.me:49780...");
   
   const client = mc.createClient({
     host: "lollyeyes.aternos.me",
@@ -12,7 +12,7 @@ function startBot() {
   let moveInterval;
 
   client.on("connect", () => {
-    console.log("[Бот] Успешно зашел на сервер и держит онлайн!");
+    console.log("[Бот] УСПЕШНО ЗАШЕЛ НА СЕРВЕР!");
   });
 
   client.on("position", () => {
@@ -20,28 +20,28 @@ function startBot() {
       moveInterval = setInterval(() => {
         if (client.position) {
           client.write("position", {
-            x: client.position.x + (Math.random() - 0.5) * 0.1,
+            x: client.position.x + (Math.random() - 0.5) * 0.05,
             y: client.position.y,
-            z: client.position.z + (Math.random() - 0.5) * 0.1,
+            z: client.position.z + (Math.random() - 0.5) * 0.05,
             onGround: true
           });
         }
-      }, 4000);
+      }, 5000);
     }
   });
 
   client.on("end", (reason) => {
-    console.log(`[Бот] Отключился (${reason}). Ждем 60 секунд перед перезаходом...`);
+    console.log(`[Бот] Вышел (${reason}). Ждем 30 секунд...`);
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 60000);
+    setTimeout(startBot, 30000);
   });
 
   client.on("error", (err) => {
-    console.log("[Бот] Ошибка подключения. Ждем 60 секунд перед перезаходом...");
+    console.log("[Бот] Ошибка связи. Ждем 30 секунд...");
     clearInterval(moveInterval);
     moveInterval = null;
-    setTimeout(startBot, 60000);
+    setTimeout(startBot, 30000);
   });
 }
 
